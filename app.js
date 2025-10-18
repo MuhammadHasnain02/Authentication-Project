@@ -44,7 +44,7 @@ signupBtn.addEventListener("click" , async () => {
         error.message
     }
     else {
-        showToast("Confirm Your Email!" , "A confirmation link has been sent to your email address. Please check your inbox to verify your account before logging in." , "emerald-500")
+        showToast("Confirm Your Email!" , "A confirmation link has been sent to your email address. Please check your inbox to verify your account before logging in." , "purple-500")
         console.log(data);
     }
 
@@ -64,7 +64,7 @@ loginBtn.addEventListener("click" , async () => {
         showToast("Invalid Credentials!" , "The email or password you entered is incorrect. Please double-check your details and try again." , "red-500")
     }
     else {
-        showToast("Login Successful!" , "You have successfully logged in to your account. Welcome back!" , "purple-500")
+        showToast("Login Successful!" , "You have successfully logged in to your account. Welcome back!" , "emerald-500")
         
         authSect.classList.add("hidden")
         mainSect.classList.remove("hidden")
@@ -83,6 +83,29 @@ logoutBtn.addEventListener("click" , async () => {
 
     authSect.classList.remove("hidden")
     mainSect.classList.add("hidden")
+
+})
+
+// -----------<<< Check User Session on Page Load >>>--------------
+
+window.addEventListener("DOMContentLoaded", async () => {
+
+    // start with loading
+    authSect.classList.add("hidden")
+    mainSect.classList.remove("hidden")
+    
+    const { data } = await supabase.auth.getSession()
+    console.log(data);
+    
+    if (data.session) {
+        currentUser = data.session.user.id
+        authSect.classList.add("hidden")
+        mainSect.classList.remove("hidden")
+    }
+    else {
+        authSect.classList.remove("hidden")
+        mainSect.classList.add("hidden")
+    }
 
 })
 
