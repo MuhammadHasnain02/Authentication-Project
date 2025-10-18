@@ -3,6 +3,9 @@ let SUPABASE_URL = "https://lntrfndfszbbhycarfjt.supabase.co";
 let SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxudHJmbmRmc3piYmh5Y2FyZmp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1MjQ1MDMsImV4cCI6MjA3MjEwMDUwM30.qrr-rlmqvBgoa76u5rXl8vMqpJozQkqpGyzXSwNfMzo";
 let supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+let authSect = document.getElementById("authSect")
+let mainSect = document.getElementById("mainSect")
+
 // -----------<<< Authentication [Signup & Login] Section >>>--------------
 
 // Elements
@@ -12,6 +15,7 @@ let forgetPassw = document.getElementById("forgetPassw")
 
 let signupBtn = document.getElementById("signupBtn")
 let loginBtn = document.getElementById("loginBtn")
+let logoutBtn = document.getElementById("logoutBtn")
 
 
 // Show & Hide Password Handling
@@ -61,7 +65,10 @@ loginBtn.addEventListener("click" , async () => {
     }
     else {
         showToast("Login Successful!" , "You have successfully logged in to your account. Welcome back!" , "purple-500")
-        location.href = "./main.html"
+        
+        authSect.classList.add("hidden")
+        mainSect.classList.remove("hidden")
+
         console.log(data);
     }
 
@@ -69,16 +76,30 @@ loginBtn.addEventListener("click" , async () => {
     userPassword.value = ""
 })
 
+// Logout User Handling
+logoutBtn.addEventListener("click" , async () => {
+
+    await supabase.auth.signOut()
+
+    authSect.classList.remove("hidden")
+    mainSect.classList.add("hidden")
+
+})
+
 
 // -----------<<< Main Page Section >>>--------------
+// async function getData() {
+//     const { data, error } = await supabase.from('Hackathon-Project').select()
 
+//     if (data) {
+//         console.log("✅ Data fetched successfully:", data);
+//     }
 
-
-
-
-
-
-
+//     if (error) {
+//         console.error("❌ Error fetching data:", error.message);
+//     }
+// }
+// getData();
 
 
 
@@ -124,29 +145,3 @@ function showToast(message , descrp , color) {
 signinGoogle.addEventListener("click" , () => {
     showToast("Feature Locked!" , "This feature is currently locked — it will be unlocked in a future update!" , "purple-700")
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// async function getData() {
-//     const { data, error } = await supabase.from('Hackathon-Project').select()
-
-//     if (data) {
-//         console.log("✅ Data fetched successfully:", data);
-//     }
-
-//     if (error) {
-//         console.error("❌ Error fetching data:", error.message);
-//     }
-// }
-// getData();
